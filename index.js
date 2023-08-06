@@ -13,18 +13,19 @@ app.get("/", (req, res) => {
   try {
     res.send("Hello");
   } catch (error) {
-    res.status(500).json({ message: error.message }); 
+    res.status(500).json({ message: error.message });
   }
 });
 app.get("/movies", async (req, res) => {
   try {
     const movie = await MoviesModel.find({});
-    res.status(500).json(movie);
+    res.status(200).json(movie); // Change 500 to 200
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
 });
+
 app.get("/movies/:id", async (req, res) => {
   try {
     const { id } = req.params;
