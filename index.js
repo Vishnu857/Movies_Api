@@ -13,7 +13,7 @@ app.get("/", (req, res) => {
   try {
     res.send("Hello");
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: error.message }); 
   }
 });
 app.get("/movies", async (req, res) => {
