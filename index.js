@@ -3,14 +3,18 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
-const port=process.env.PORT||9000
+const port = process.env.PORT || 9000;
 app.use(bodyParser.json());
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 const ReviewModel = require("./model/ReviewModel.js");
 const MoviesModel = require("./model/MoviesModel.js");
 app.get("/", (req, res) => {
-  res.send("Hello");
+  try {
+    res.send("Hello");
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 });
 app.get("/movies", async (req, res) => {
   try {
