@@ -16,13 +16,14 @@ const Reviews = () => {
   const fetchMovieData = async (movieId) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/movies/${movieId}`
+        `http://localhost:5000/api/v1/movies/${movieId}`
       );
       const json = await response.json();
       setMovie(json);
       console.log(json.title);
 
       const reviews = json.reviewIds;
+      // console.log(reviews);
       const reviewBodies = reviews.map((review) => ({ value: review.body }));
       console.log(reviewBodies);
       setReview(reviewBodies);
@@ -49,7 +50,7 @@ const Reviews = () => {
       };
 
       const response = await fetch(
-        "http://localhost:8080/api/v1/reviews",
+        "http://localhost:5000/api/v1/reviews",
         requestOptions
       );
       const data = await response.json();
