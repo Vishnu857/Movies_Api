@@ -5,7 +5,7 @@ const app = express();
 const cors = require("cors");
 const port = process.env.PORT || 9000;
 app.use(bodyParser.json());
-app.use(cors({ origin: "https://moviereview-site.vercel.app/" }));
+app.use(cors({ origin: "https://moviereview-site.vercel.app" }));
 app.use(express.json());
 const ReviewModel = require("./model/ReviewModel.js");
 const MoviesModel = require("./model/MoviesModel.js");
