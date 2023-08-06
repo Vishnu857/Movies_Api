@@ -32,10 +32,7 @@ const movieSchema = mongoose.Schema({
     type: [String],
     required: true,
   },
-  reviewIds: {
-    type: [mongoose.Types.ObjectId],
-    default: [],
-  },
+  
 });
 
 const movies = mongoose.model("movies", movieSchema);
