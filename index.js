@@ -80,7 +80,7 @@ mongoose
   )
   .then(() => {
     console.log("connected to mongodb");
-    app.listen(9000, () => {
+    app.listen(port, () => {
       console.log("server started");
     });
   });
