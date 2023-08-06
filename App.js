@@ -72,7 +72,7 @@ mongoose
   )
   .then(() => {
     console.log("connected to mongodb");
-    app.listen(5000, () => {
+    app.listen(9000, () => {
       console.log("server started");
     });
   });
