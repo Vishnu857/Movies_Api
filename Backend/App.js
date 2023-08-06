@@ -9,10 +9,6 @@ app.use(express.json());
 const ReviewModel = require("./model/ReviewModel.js");
 const MoviesModel = require("./model/MoviesModel.js");
 
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
-
 app.get("/movies", async (req, res) => {
   try {
     const movie = await MoviesModel.find({});
@@ -20,6 +16,22 @@ app.get("/movies", async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
+  }
+});
+app.get("/movies/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const movie = await MoviesModel.find({ imdbId: id });
+
+    if (movie.length === 0) {
+      return res.status(404).json({ message: "Movie not found" });
+    }
+
+    const posterUrl = movie[0].poster;
+    res.status(200).json({ posterUrl });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
@@ -33,56 +45,22 @@ app.post("/movies/add", async (req, res) => {
   }
 });
 
-app.get("/api/v1/movies/:imdbId", async (req, res) => {
+app.get("/reviews/:ibd", async (req, res) => {
   try {
-    const { imdbId } = req.params;
-    const movie = await MoviesModel.findOne({ imdbId: imdbId });
-
-    if (!movie) {
-      // If no movie is found with the given IMDb ID, send a 404 Not Found response.
-      return res.status(404).json({ message: "Movie not found" });
-    }
-
-    const rev = movie.reviewIds;
-    const review = await ReviewModel.findOne({ _id: rev }); // Use _id instead of id
-    // res.send(review.body);
-    res.send(rev);
-    console.log(JSON.stringify(rev));
+    const { ibd } = req.params;
+    const review = await ReviewModel.find({ iid: ibd });
+    res.send(review);
+    // console.log(review.revtext);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
 });
 
-app.get("/reviews/:id", async (req, res) => {
+app.post("/reviews", async (req, res) => {
   try {
-    const { id } = req.params;
-    const review = await ReviewModel.findOne({ _id: id });
-
-    if (!review) {
-      // If no review is found with the given ID, send a 404 Not Found response.
-      return res.status(404).json({ message: "Review not found" });
-    }
-
-    res.send(review.body);
-    console.log(review.body);
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
-
-app.post("/api/v1/reviews", async (req, res) => {
-  try {
-    let newReview = await ReviewModel.create(req.body);
-    res.send("form submitted");
-    console.log(newReview);
-  } catch (error) {
-    res.status(422).json({ error: "Invalid Request" });
-  }
-});
-app.get("/api/v1/reviews", async (req, res) => {
-  try {
-    let newReview = await ReviewModel.find({});
-    res.send(newReview);
+    const newReview = await ReviewModel.create(req.body);
+    res.send("Review added successfully!");
+    // console.log(newReview);
   } catch (error) {
     res.status(422).json({ error: "Invalid Request" });
   }

@@ -9,23 +9,20 @@ const Reviews = () => {
   const movieId = params.movieId;
   const [movie, setMovie] = useState([]);
   const [review, setReview] = useState([]);
+  const [url,setUrl]=useState("")
   useEffect(() => {
     fetchMovieData(movieId);
-    // console.log(review);
   }, []);
   const fetchMovieData = async (movieId) => {
     try {
-      const response = await fetch(
-        `http://localhost:5000/api/v1/movies/${movieId}`
-      );
+      const img=await fetch(`http://localhost:5000/movies/${movieId}`)
+      const imjs=await img.json()
+      setUrl(imjs.posterUrl);
+      const response = await fetch(`http://localhost:5000/reviews/${movieId}`);
       const json = await response.json();
       setMovie(json);
-      console.log(json.title);
-
-      const reviews = json.reviewIds;
-      // console.log(reviews);
-      const reviewBodies = reviews.map((review) => ({ value: review.body }));
-      console.log(reviewBodies);
+      const reviewBodies = json.map((review) => (review.revtext));
+      
       setReview(reviewBodies);
     } catch (error) {
       console.log("Error fetching data:", error);
@@ -44,26 +41,23 @@ const Reviews = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          reviewBody: rev.value,
-          imdbId: movieId,
+          revtext: rev.value,
+          iid: movieId,
         }),
       };
 
       const response = await fetch(
-        "http://localhost:5000/api/v1/reviews",
+        "http://localhost:5000/reviews",
         requestOptions
       );
-      const data = await response.json();
-
-      const updatedReviews = [...review, { value: rev.value }]; // Update the property name to "value"
-
-      rev.value = "";
-
+      
+      const updatedReviews = [...review, rev.value];
       setReview(updatedReviews);
+      rev.value = "";
     } catch (err) {
       console.error(err);
     }
-    console.log(review);
+    // console.log(review);
   };
 
   return (
@@ -75,7 +69,7 @@ const Reviews = () => {
       </Row>
       <Row className="mt-2">
         <Col>
-          <img src={movie?.poster} alt="" />
+          <img src={url} alt="" />
         </Col>
         <Col>
           <>
@@ -97,7 +91,7 @@ const Reviews = () => {
           {review.map((r, index) => (
             <React.Fragment key={index}>
               <Row>
-                <Col>{r.value}</Col> {/* Access the value property */}
+                <Col>{r}</Col> {/* Access the value property */}
               </Row>
               <Row>
                 <Col>

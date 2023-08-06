@@ -8,12 +8,10 @@ import Reviews from "./components/reviews/Reviews";
 
 function App() {
   const [movies, setMovies] = useState();
-  const [movie, setMovie] = useState();
-  const [reviews, setReviews] = useState([]);
 
   const fetchMovies = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/v1/movies");
+      const response = await fetch("http://localhost:5000/movies");
       const json = await response.json();
       setMovies(json);
       // console.log(json);
@@ -25,20 +23,13 @@ function App() {
     fetchMovies();
   }, []);
 
- 
-
   return (
     <div className="App">
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route path="/" element={<Home movies={movies} />}></Route>
           <Route path="/Trailer/:ytTrailerId" element={<Trailer />}></Route>
-          <Route
-            path="/Reviews/:movieId"
-            element={
-              <Reviews/>
-            }
-          ></Route>
+          <Route path="/Reviews/:movieId" element={<Reviews />}></Route>
         </Route>
       </Routes>
     </div>
