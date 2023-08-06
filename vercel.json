@@ -1,5 +1,12 @@
 {
-    "name": "MoviesApi",
-    "version": 2,
-    "framework": "nodejs"
+    "version":2,
+    "builds": [
+      { "src": "*.js", "use": "@vercel/node" }
+    ],
+    "routes": [
+        {
+          "src": "/(.*)",
+          "dest": "/"
+        }
+    ]
   }

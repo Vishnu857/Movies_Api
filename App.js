@@ -8,7 +8,9 @@ app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 const ReviewModel = require("./model/ReviewModel.js");
 const MoviesModel = require("./model/MoviesModel.js");
-
+app.get("/", (req, res) => {
+  res.send("Hello");
+});
 app.get("/movies", async (req, res) => {
   try {
     const movie = await MoviesModel.find({});
