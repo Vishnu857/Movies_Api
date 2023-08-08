@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const projctmodule = require("./model/ProjectModel");
+
 const app = express();
 const cors = require("cors");
 const port = process.env.PORT || 9000;
@@ -71,6 +73,22 @@ app.post("/reviews", async (req, res) => {
     // console.log(newReview);
   } catch (error) {
     res.status(422).json({ error: "Invalid Request" });
+  }
+});
+app.get("/projects", async (req, res) => {
+  try {
+    const project = await projctmodule.find({});
+    res.send(project);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+app.post("/project/add", async (req, res) => {
+  try {
+    var newProj = await projctmodule.create(req.body);
+    res.send(newProj);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 });
 
