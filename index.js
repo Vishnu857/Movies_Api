@@ -1,33 +1,30 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const projctmodule = require("./model/ProjectModel");
-
 const app = express();
 const cors = require("cors");
-const port = process.env.PORT || 9000;
+const dotenv = require("dotenv");
+dotenv.config();
 app.use(bodyParser.json());
+const port = process.env.PORT || 3000;
+const url = process.env.MONGO_URL;
+
+app.use(express.json()); // Parse JSON in request bodies
+app.use(express.urlencoded());
 app.use(cors({ origin: "https://moviereview-site.vercel.app" }));
 app.use(express.json());
 const ReviewModel = require("./model/ReviewModel.js");
 const MoviesModel = require("./model/MoviesModel.js");
-app.get("/", (req, res) => {
-  try {
-    res.send("Hello");
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
-});
+
 app.get("/movies", async (req, res) => {
   try {
     const movie = await MoviesModel.find({});
-    res.status(200).json(movie); // Change 500 to 200
+    res.status(500).json(movie);
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: error.message });
   }
 });
-
 app.get("/movies/:id", async (req, res) => {
   try {
     const { id } = req.params;
@@ -75,30 +72,15 @@ app.post("/reviews", async (req, res) => {
     res.status(422).json({ error: "Invalid Request" });
   }
 });
-app.get("/projects", async (req, res) => {
-  try {
-    const project = await projctmodule.find({});
-    res.send(project);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
-app.post("/project/add", async (req, res) => {
-  try {
-    var newProj = await projctmodule.create(req.body);
-    res.send(newProj);
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-});
 
 mongoose
-  .connect(
-    "mongodb+srv://vishnu:VueU5Brp66byGA@cluster0.xar7ngm.mongodb.net/MovieApi?retryWrites=true&w=majority"
-  )
+  .connect(url)
   .then(() => {
-    console.log("connected to mongodb");
+    console.log("Connected to MongoDB");
     app.listen(port, () => {
-      console.log("server started");
+      console.log(`Server is running on port ${port}`);
     });
+  })
+  .catch((error) => {
+    console.error("Error connecting to MongoDB:", error.message);
   });
