@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
 const url = process.env.MONGO_URL;
 
-app.use(express.json()); // Parse JSON in request bodies
+app.use(express.json()); 
 app.use(express.urlencoded());
 app.use(cors({ origin: "https://moviereview-site.vercel.app" }));
 app.use(express.json());
