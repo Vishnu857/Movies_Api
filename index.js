@@ -3,7 +3,8 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const app = express();
 const cors = require("cors");
-
+const dotenv = require("dotenv");
+dotenv.config();
 app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
 const url = process.env.MONGO_URL;
