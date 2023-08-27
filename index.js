@@ -7,7 +7,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 app.use(bodyParser.json());
 const port = process.env.PORT || 3000;
-const url = process.env.MONGO_URL;
+const connectionString = `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@coding-blog-t0xf0.mongodb.net/<dbname>`
 
 app.use(express.json()); 
 app.use(express.urlencoded());
