@@ -11,7 +11,7 @@ const url = process.env.MONGO_URL;
 
 app.use(express.json()); // Parse JSON in request bodies
 app.use(express.urlencoded());
-app.use(cors({ origin: "https://moviereview-site.vercel.app" }));
+app.use(cors());
 app.use(express.json());
 const ReviewModel = require("./model/ReviewModel.js");
 const MoviesModel = require("./model/MoviesModel.js");
